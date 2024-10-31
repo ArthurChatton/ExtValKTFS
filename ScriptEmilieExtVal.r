@@ -1,7 +1,7 @@
 ############################################
 ## Script adapted by Arthur Chatton (Université de Montréal, QC) 
 ## from the internship of Emilie Pilote (Université de Montréal, QC)
-## contact: see email adress at https://arthurchatton.netlify.app/
+## Contact: see email address at https://arthurchatton.netlify.app/
 ############################################
 
 
@@ -388,9 +388,8 @@ boot_perfs <- function(B, data, Coef=NULL, time="Tretour.annee", evt='Eretour', 
 ## DIVAT ##
 
 # Need data and KTFS R object from Foucher et al. (2010, Kidney Int)
-setwd("C:/Users/te96371/Desktop/CHATTON/KTFS/Divat Yohann/Analyses_version3_final")
+data.auc <- read.csv("divat.csv")
 
-source('Program Arthur.r')
 Data.auc$evt_num <- ifelse(Data.auc$Eretour==1, 1, ifelse(Data.auc$Edeces==1, 2, 0))
 Data.auc$evt_name <- factor(ifelse(Data.auc$Eretour==1, "return", ifelse(Data.auc$Edeces==1, "death", "cens")))
 
@@ -400,16 +399,8 @@ fit_csh <- CSC(
   data = Data.auc
 )
 
-
-setwd("C:/Users/te96371/Desktop/CHATTON/KTFS")
-
 ### EKiTE  ###
 db <- read.csv("ekite_completecase.csv")
-
-#strat modification: recompute time here
-db$time <- pmin(db$tdeath, db$treturn, db$tmax, db$tmax2, na.rm=T)
-db <- db[db$time>=365,]
-#end modification
 
 db$time <- db$time/365.25
 db <- db[db$time>=1,]
@@ -429,13 +420,8 @@ ekite2 <- data.frame("SexeR" = ekite$SexeR, "SexeD" = ekite$gender_d, "IMC" = ek
 
 
 ### CHUM ###
-chum <- as.data.frame(read_excel("C:/Users/te96371/Desktop/chum.complete.xlsx"))
+chum <- as.data.frame(read_excel("chum.complete.xlsx"))
 chum$Eretour <- as.integer(chum$Eretour)
-
-if(is.null(chum$Edeces)){
-  chum$Edeces <- 0
-  chum$Edeces[c(1,3,9,16,17,19,23,26,28:30,34,35,41,43:45,50,51,54,57,58,68,74,80,105,106,118,119,123,124,133,139,142,144,146,177,180,187)] <- 1
-}
 
 chum$evt_num <- ifelse(chum$Eretour==1, 1, ifelse(chum$Edeces==1, 2, 0))
 chum$evt_name <- factor(ifelse(chum$Eretour==1, "return", ifelse(chum$Edeces==1, "death", "cens")))

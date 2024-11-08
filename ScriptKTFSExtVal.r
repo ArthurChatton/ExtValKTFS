@@ -43,7 +43,7 @@ perfs <- function(data, Coef, time, evt, horizon, plot=FALSE){
   # Prognostic index (PI)
   data$PI <- as.vector(as.matrix(des_matr) %*% cbind(coef))
   
-  # Estimated absolute risk at 5 years (1 - S(t), 1 - survival at time t)
+  # Estimated absolute risk at 8 years (1 - S(t), 1 - survival at time t)
   data$pred <-  as.vector(1 - h0**exp(data$PI))
   
   
